@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lǚyóu 旅游 Travel — 阅读与打字练习 · Lachlan 的汉语课</title>
+<style>
+:root{
+  --ink:#274A3F; --ink2:#3D6A5A; --ink9:#14261F;
+  --sun:#F2A900; --sun-s:#FDF3DC;
+  --paper:#FBF5E6; --line:#E4E0D4; --grey:#6B7A75;
+  --ok:#2E7D5B; --ok-bg:#E7F4EE; --no:#C0492F; --no-bg:#FBEAE6;
+  --r:14px; --sh:0 2px 14px rgba(20,38,31,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:"LXGW WenKai TC","LXGW WenKai","KaiTi","楷体",Calibri,system-ui,sans-serif;
+  background:#F4F1E8;color:var(--ink9);line-height:1.8;font-size:16px;
+}
+body.fs-l{font-size:19px} body.fs-xl{font-size:22px}
+
+/* ===== 全局拼音开关：关掉时所有拼音一起消失 ===== */
+body.no-py .py,
+body.no-py .pyx,
+body.no-py ruby rt,
+body.no-py .py-only{display:none!important}
+body.no-py .lb{gap:0}
+
+/* 三语标签 */
+.lb{display:inline-flex;flex-direction:column;line-height:1.25;text-align:inherit}
+.lb .py{font-size:.62em;color:var(--sun);font-weight:700;letter-spacing:.02em}
+.lb .cn{font-size:1em;font-weight:700}
+.lb .en{font-size:.62em;color:var(--grey);font-weight:400}
+header .lb .en{color:#9FB3AB}
+nav .lb .en{color:inherit;opacity:.75}
+.pyx{color:var(--sun);font-weight:700}
+
+header{background:var(--ink);color:#fff;padding:18px 20px 0;position:sticky;top:0;z-index:60;box-shadow:0 2px 16px rgba(0,0,0,.18)}
+.wrap{max-width:1000px;margin:0 auto}
+.hrow{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.hrow h1{font-size:1.35rem;letter-spacing:.04em;line-height:1.3}
+.hrow h1 small{display:block;font-size:.58rem;color:var(--sun);font-weight:700;letter-spacing:.14em}
+.hrow h1 em{display:block;font-size:.58rem;color:#9FB3AB;font-style:normal}
+.who{margin-left:auto;font-size:.78rem;color:#9FB3AB;text-align:right;line-height:1.5}
+.who b{color:var(--sun);display:block;font-size:.9rem}
+.tools{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.tools button{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.22);
+  border-radius:999px;padding:5px 13px;font:inherit;font-size:.75rem;cursor:pointer;transition:.15s}
+.tools button:hover{background:var(--sun);color:var(--ink9);border-color:transparent}
+.tools button.on{background:var(--sun);color:var(--ink9);border-color:transparent;font-weight:700}
+nav{display:flex;gap:2px;overflow-x:auto;margin-top:12px}
+nav button{background:none;border:none;color:#B9CCC4;font:inherit;padding:9px 14px;cursor:pointer;
+  white-space:nowrap;border-bottom:3px solid transparent;text-align:center}
+nav button.on{color:#fff;border-bottom-color:var(--sun)}
+nav button.on .py{color:var(--sun)}
+
+main{max-width:1000px;margin:0 auto;padding:24px 20px 100px}
+section{display:none} section.on{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+h2.sec{font-size:1.4rem;color:var(--ink);margin-bottom:4px}
+.lead{color:var(--grey);font-size:.88rem;margin-bottom:20px;line-height:1.7}
+h3{font-size:1.05rem;color:var(--ink);margin:26px 0 12px;display:flex;align-items:center;gap:9px}
+h3::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--sun);flex:none}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--sh);margin-bottom:14px}
+.tint{background:var(--paper)}
+.note{background:var(--sun-s);border-left:4px solid var(--sun);border-radius:0 10px 10px 0;padding:12px 15px;margin:14px 0;font-size:.88rem}
+.note .en{color:var(--grey);display:block;margin-top:3px;font-size:.85em}
+
+/* 阅读 */
+.story{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:26px 24px;box-shadow:var(--sh);position:relative;overflow:hidden}
+.story::after{content:"Lachlan 的汉语课";position:absolute;right:-14px;bottom:40px;transform:rotate(-32deg);
+  font-size:1.45rem;color:rgba(39,74,63,.05);font-weight:700;pointer-events:none;letter-spacing:.1em}
+.story p{text-indent:2em;margin-bottom:16px;font-size:1.06rem;line-height:2.5;position:relative;z-index:1}
+ruby{ruby-position:over}
+ruby rt{font-size:.48em;color:var(--sun);font-weight:700;line-height:1.4}
+.w{cursor:pointer;border-bottom:2px solid var(--sun);padding:0 1px;border-radius:2px;transition:.12s}
+.w:hover,.w:focus-visible{background:var(--sun-s);outline:none}
+.w.act{background:var(--sun);color:var(--ink9)}
+.pop{position:fixed;z-index:80;background:var(--ink);color:#fff;border-radius:12px;padding:14px 16px;
+  max-width:340px;box-shadow:0 10px 30px rgba(0,0,0,.3);font-size:.88rem;display:none;line-height:1.65}
+.pop.on{display:block}
+.pop .ph{font-size:1.5rem;font-weight:700;line-height:1.3}
+.pop .pp{color:var(--sun);font-weight:700;font-size:.9rem}
+.pop .pe{color:#DCE6E1;margin:5px 0 8px}
+.pop .px{border-top:1px solid rgba(255,255,255,.18);padding-top:8px;margin-top:4px;color:#C9D6D0;font-size:.83rem}
+.pop .pn{background:rgba(242,169,0,.16);border-radius:8px;padding:7px 10px;margin-top:8px;font-size:.8rem;color:#FFE6AE}
+.pop .pn .pyx{color:#FFD070}
+.pop button{background:var(--sun);color:var(--ink9);border:none;border-radius:999px;padding:5px 14px;
+  font:inherit;font-size:.78rem;font-weight:700;cursor:pointer;margin-top:10px}
+.pop .close{position:absolute;top:8px;right:11px;background:none;color:#9FB3AB;font-size:1.1rem;padding:0;margin:0;width:22px}
+
+/* 词汇表 */
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}
+.chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font:inherit;font-size:.8rem;cursor:pointer;line-height:1.3}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+#vq{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:10px;font:inherit;margin-bottom:14px;background:#fff}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.vc{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:15px;box-shadow:var(--sh);position:relative;transition:.15s}
+.vc:hover{transform:translateY(-2px);border-color:var(--sun)}
+.vc .n{position:absolute;top:12px;right:14px;font-size:.7rem;color:#B9C2BE}
+.tg{display:inline-block;font-size:.64rem;padding:2px 8px;border-radius:999px;margin-bottom:6px}
+.tg.c{background:var(--sun);color:var(--ink9);font-weight:700}
+.tg.e{background:#EDEAE0;color:var(--grey)}
+.vc .han{font-size:1.85rem;font-weight:700;color:var(--ink);line-height:1.35;cursor:pointer}
+.vc .en2{font-size:.85rem;margin-top:4px}
+.vc .pos{color:var(--grey);font-size:.72rem}
+.vc .ex2{border-left:3px solid var(--sun);padding-left:9px;margin-top:9px;font-size:.84rem;color:#3b4a44}
+.vc .nt{background:var(--sun-s);border-radius:8px;padding:7px 10px;margin-top:8px;font-size:.78rem;color:#7a5600}
+.spk{background:none;border:1px solid var(--line);border-radius:8px;padding:3px 10px;font:inherit;font-size:.75rem;cursor:pointer;color:var(--ink);margin-top:8px}
+.spk:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* 打字 */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:10px;margin-bottom:16px}
+.st{background:var(--ink);color:#fff;border-radius:12px;padding:12px 14px;text-align:center}
+.st b{display:block;font-size:1.7rem;color:var(--sun);line-height:1.2;font-variant-numeric:tabular-nums}
+.st span{font-size:.66rem;color:#A9C0B6;display:block;line-height:1.35}
+.st span i{display:block;font-style:normal;color:#fff;font-size:.78rem;font-weight:700}
+.tcard{background:#fff;border:2px solid var(--line);border-radius:var(--r);padding:24px;box-shadow:var(--sh);text-align:center}
+.tcard.good{border-color:var(--ok);background:var(--ok-bg)}
+.tcard.bad{border-color:var(--no);background:var(--no-bg)}
+.prompt-en{font-size:1.25rem;font-weight:700;color:var(--ink);margin-bottom:4px}
+.prompt-py{color:var(--sun);font-weight:700;font-size:1.35rem;letter-spacing:.03em;min-height:1.4em}
+.prompt-hint{color:var(--grey);font-size:.82rem;margin-top:6px}
+.reveal{font-size:2.6rem;font-weight:700;color:var(--ink);margin:12px 0 4px;min-height:1.2em;letter-spacing:.05em}
+.reveal.hide{color:transparent;text-shadow:0 0 18px rgba(39,74,63,.42)}
+.tin{width:100%;max-width:420px;padding:13px 16px;border:2px solid var(--ink);border-radius:12px;
+  font:inherit;font-size:1.4rem;text-align:center;margin:14px auto 0;display:block;background:#fff}
+.tin:focus{outline:3px solid var(--sun);outline-offset:2px}
+.tfb{margin-top:12px;font-size:.9rem;min-height:1.6em;font-weight:700}
+.tfb.ok{color:var(--ok)} .tfb.no{color:var(--no)}
+.btn{background:var(--ink);color:#fff;border:none;border-radius:999px;padding:9px 20px;font:inherit;font-size:.85rem;cursor:pointer;margin:12px 5px 0}
+.btn:hover{background:var(--ink2)}
+.btn.y{background:var(--sun);color:var(--ink9);font-weight:700}
+.btn.ghost{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+.modes{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-bottom:14px}
+.target{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:20px;
+  font-size:1.45rem;line-height:2.1;letter-spacing:.04em;text-align:left;word-break:break-all;min-height:3em}
+.target span.ok{color:var(--ok)}
+.target span.no{color:var(--no);background:var(--no-bg);border-radius:3px}
+.target span.cur{background:var(--sun);color:var(--ink9);border-radius:3px}
+.target span.pc{color:#B9A87A}
+.target span.pc.ok{color:var(--ok)}
+.tarea{width:100%;padding:14px 16px;border:2px solid var(--ink);border-radius:12px;font:inherit;
+  font-size:1.2rem;line-height:1.9;margin-top:14px;background:#fff;resize:vertical;min-height:88px}
+.tarea:focus{outline:3px solid var(--sun);outline-offset:2px}
+.punc{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;justify-content:center;align-items:center}
+.punc button{background:#fff;border:1px solid var(--line);border-radius:8px;min-width:38px;height:34px;
+  font:inherit;font-size:1rem;cursor:pointer;color:var(--ink);padding:0 10px}
+.punc button:hover{background:var(--sun);border-color:var(--sun)}
+.punc .sp{font-size:.78rem;font-weight:700}
+.prog{height:7px;background:var(--line);border-radius:99px;overflow:hidden;margin:14px 0}
+.prog i{display:block;height:100%;background:var(--sun);width:0;transition:width .3s}
+.slist{display:flex;gap:5px;flex-wrap:wrap;margin-top:12px}
+.sdot{width:27px;height:27px;border-radius:7px;border:1px solid var(--line);background:#fff;
+  font:inherit;font-size:.7rem;cursor:pointer;color:var(--grey)}
+.sdot.on{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:700}
+.sdot.fin{background:var(--ok-bg);color:var(--ok);border-color:var(--ok)}
+
+/* 题目 */
+.q{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:12px;box-shadow:var(--sh)}
+.opt{display:block;width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:10px;
+  padding:10px 14px;margin-bottom:7px;font:inherit;font-size:.93rem;cursor:pointer;transition:.13s}
+.opt:hover:not(:disabled){border-color:var(--sun);background:var(--sun-s)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--ok);background:var(--ok-bg);font-weight:700}
+.opt.wrong{border-color:var(--no);background:var(--no-bg)}
+.fb{display:none;margin-top:8px;padding:9px 12px;border-radius:10px;background:var(--sun-s);font-size:.85rem;border-left:4px solid var(--sun)}
+.fb.show{display:block}
+
+/* 反馈 */
+.scale{display:flex;gap:7px;flex-wrap:wrap}
+.scale button,.multi button{background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:9px 14px;
+  font:inherit;font-size:.85rem;cursor:pointer;flex:1;min-width:120px;text-align:center;transition:.13s}
+.scale button:hover,.multi button:hover{border-color:var(--sun)}
+.scale button.on,.multi button.on{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:700}
+.multi{display:flex;gap:7px;flex-wrap:wrap}
+.fbox{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font:inherit;
+  font-size:.95rem;line-height:1.8;background:#fff;resize:vertical;min-height:80px}
+.fbox:focus{outline:3px solid var(--sun);outline-offset:1px}
+.saved{color:var(--ok);font-size:.78rem;float:right}
+.sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.sumi{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+.sumi b{display:block;font-size:1.5rem;color:var(--ink);line-height:1.3}
+.sumi span{font-size:.7rem;color:var(--grey);line-height:1.4;display:block}
+#copyout{width:100%;min-height:150px;padding:12px;border:1px dashed var(--line);border-radius:10px;
+  font-family:Menlo,Consolas,monospace;font-size:.8rem;background:var(--paper);margin-top:10px;display:none}
+#copyout.on{display:block}
+
+footer{background:var(--ink);color:#8FA69D;text-align:center;padding:20px;font-size:.75rem}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+@media(max-width:600px){
+  .story{padding:20px 16px}.story p{font-size:1rem;line-height:2.4}
+  .target{font-size:1.2rem}.reveal{font-size:2.1rem}.who{margin-left:0;text-align:left}
+}
+@media print{header,nav,.tools,footer,.spk,.filters,#vq,.punc,.btn{display:none!important}
+  section{display:block!important;page-break-after:always}body{background:#fff}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+ <div class="wrap">
+  <div class="hrow">
+    <h1><small>LǙYÓU · TRAVEL</small>旅　游<em>Cambridge IGCSE 中文（第二语言）0523</em></h1>
+    <div class="who"><b>Lachlan 的汉语课</b>Lachlan's Chinese Class</div>
+  </div>
+  <div class="tools">
+    <button id="bPy" class="on">Pīnyīn 拼音 Pinyin：开 ON</button>
+    <button id="bFs">Zìhào 字号 Text size</button>
+    <button id="bSpeak">Lǎngdú 朗读 Read aloud</button>
+    <button id="bReset">Qīngkōng 清空 Reset</button>
+  </div>
+  <nav id="nav"></nav>
+ </div>
+</header>
+
+<main id="main"></main>
+<div class="pop" id="pop"></div>
+<footer>Lachlan 的汉语课　·　Lachlan's Chinese Class　·　Líxiàn kěyòng 离线可用 Works offline</footer>
+
+<script>
+const V=[{"n":1,"c":"旅游","p":"lǚyóu","t":"lvyou","pos":"动/名","en":"to travel; tourism","ex":"今年暑假我打算去中国旅游。","note":"你去了哪儿旅游？—— 加拿大。｜旅游景点 = travel place","f":"A","core":1},{"n":2,"c":"景点","p":"jǐngdiǎn","t":"jingdian","pos":"名","en":"scenic spot; attraction","ex":"北京有哪些著名的旅游景点？","note":"常说：旅游景点、著名景点","f":"A","core":1},{"n":3,"c":"著名","p":"zhùmíng","t":"zhuming","pos":"形","en":"famous; well-known","ex":"长城是世界著名的名胜古迹。","note":"著名 = 有名（口语）。例：C罗 luó 很有名。","f":"A","core":1},{"n":4,"c":"名胜古迹","p":"míngshèng gǔjì","t":"mingshengguji","pos":"名","en":"scenic spots & historical sites","ex":"西安的名胜古迹特别多。","note":"例：狮身人面像 shīshēnrénmiànxiàng（埃及）","f":"A","ext":1},{"n":5,"c":"参观","p":"cānguān","t":"canguan","pos":"动","en":"to visit (a place)","ex":"我们参观了西安交通大学。","note":"参观 + place（学校、博物馆、公司）。例：参观多伦多／温尼伯 Wēnníbó","f":"A","core":1},{"n":6,"c":"游览","p":"yóulǎn","t":"youlan","pos":"动","en":"to go sightseeing; to tour","ex":"我们游览了长城和故宫。","note":"看风景用「游览」，看场馆用「参观」。","f":"A","core":1},{"n":7,"c":"观光","p":"guānguāng","t":"guanguang","pos":"动","en":"to go sightseeing","ex":"除了观光，你还想做什么？","note":"观光 + 车 → 观光车 sightseeing bus","f":"A"},{"n":8,"c":"长城","p":"Chángchéng","t":"changcheng","pos":"专名","en":"the Great Wall","ex":"不到长城非好汉。","note":"好汉 hǎohàn = real man / hero；非 fēi = 不是","f":"A"},{"n":9,"c":"故宫","p":"Gùgōng","t":"gugong","pos":"专名","en":"the Palace Museum","ex":"故宫是明清两代的皇宫。","note":"皇宫 huánggōng = palace","f":"A"},{"n":10,"c":"天坛","p":"Tiāntán","t":"tiantan","pos":"专名","en":"the Temple of Heaven","ex":"天坛是古代皇帝祭天的地方。","note":"天 → 口语「我的天啊！」= Oh my god!","f":"A"},{"n":11,"c":"颐和园","p":"Yíhéyuán","t":"yiheyuan","pos":"专名","en":"the Summer Palace","ex":"颐和园的风景非常美。","note":"北京最大的皇家园林","f":"A"},{"n":12,"c":"博物馆","p":"bówùguǎn","t":"bowuguan","pos":"名","en":"museum","ex":"我们去参观了历史博物馆。","note":"历史博物馆、医学 yīxué 博物馆、死亡 sǐwáng 博物馆、陕西 Shǎnxī 历史博物馆","f":"A","core":1},{"n":13,"c":"风景","p":"fēngjǐng","t":"fengjing","pos":"名","en":"scenery; landscape","ex":"那里的风景美得像画一样。","note":"天气很好／舒服 · 风景很美 · 心情 xīnqíng 很好｜像 xiàng = look like","f":"A","core":1},{"n":14,"c":"一流","p":"yīliú","t":"yiliu","pos":"形","en":"first-class; top-ranking","ex":"清华是中国一流的大学。","note":"也可以说：一流的球星 qiúxīng，比如亚马尔。","f":"A","ext":1},{"n":15,"c":"高等院校","p":"gāoděng yuànxiào","t":"gaodengyuanxiao","pos":"名","en":"colleges and universities","ex":"北京有很多高等院校。","note":"例：洛杉矶 Luòshānjī 有很多高等院校。","f":"A","ext":1},{"n":16,"c":"当地","p":"dāngdì","t":"dangdi","pos":"名","en":"local; that locality","ex":"我想了解当地人的生活。","note":"当地人 · 当地美食 · 当地的风俗习惯","f":"B","core":1},{"n":17,"c":"做客","p":"zuòkè","t":"zuoke","pos":"动","en":"to be a guest","ex":"我们到中国人家里做客。","note":"到／在 + 某人家里 + 做客","f":"B"},{"n":18,"c":"了解","p":"liǎojiě","t":"liaojie","pos":"动","en":"to get to know; to understand","ex":"我很想了解中国的文化。","note":"你了解哪个国家的文化？例：吉尔吉斯斯坦 Jí’ěrjísīsītǎn","f":"B","core":1},{"n":19,"c":"情况","p":"qíngkuàng","t":"qingkuang","pos":"名","en":"situation; circumstances","ex":"请介绍一下你们学校的情况。","note":"发生 fāshēng 了什么？＝ 什么情况？｜介绍学校情况：名字、在哪儿、学生和老师、设施 shèshī","f":"B","core":1},{"n":20,"c":"风俗习惯","p":"fēngsú xíguàn","t":"fengsuxiguan","pos":"名","en":"customs and habits","ex":"要尊重当地的风俗习惯。","note":"例：陕西人爱吃面 miàn；西安话「美滴很」＝「美得很」","f":"B","core":1},{"n":21,"c":"沟通","p":"gōutōng","t":"goutong","pos":"动","en":"to communicate","ex":"我用汉语跟他们沟通。","note":"必须带「跟」！我用汉语／泰语跟他们沟通。","f":"B","core":1},{"n":22,"c":"机会","p":"jīhuì","t":"jihui","pos":"名","en":"opportunity; chance","ex":"这是一个练习口语的好机会。","note":"搭配：有机会 · 好机会 · 利用这个机会","f":"B","core":1},{"n":23,"c":"利用","p":"lìyòng","t":"liyong","pos":"动","en":"to make use of","ex":"你应该利用假期去旅游。","note":"利用 + 机会／假期／时间 + 做某事（褒义，不是英语的 exploit）","f":"B","core":1},{"n":24,"c":"提供","p":"tígōng","t":"tigong","pos":"动","en":"to provide; to offer","ex":"本社为学生提供导游服务。","note":"书面语。为某人提供 + 机会／服务／帮助","f":"B","core":1},{"n":25,"c":"使","p":"shǐ","t":"shi","pos":"动","en":"to make; to enable","ex":"这次旅行使我大开眼界。","note":"大开眼界 dàkāi yǎnjiè = eye-opening","f":"B"},{"n":26,"c":"亲身体验","p":"qīnshēn tǐyàn","t":"qinshentiyan","pos":"动","en":"to experience first-hand","ex":"学生能亲身体验当地的生活。","note":"你体验过什么活动？例：给水牛 shuǐniú 洗澡 xǐzǎo、做纸 zhǐ","f":"B","ext":1},{"n":27,"c":"印象","p":"yìnxiàng","t":"yinxiang","pos":"名","en":"impression","ex":"西安给我留下了深刻的印象。","note":"固定搭配：给某人留下深刻 shēnkè／难忘的印象","f":"B","core":1},{"n":28,"c":"难忘","p":"nánwàng","t":"nanwang","pos":"形","en":"unforgettable","ex":"那是一次难忘的旅行。","note":"难 + 忘 = 很难忘记","f":"B","ext":1},{"n":29,"c":"品尝","p":"pǐncháng","t":"pinchang","pos":"动","en":"to taste; to savour","ex":"我们品尝了当地的风味小吃。","note":"比「吃」正式。品尝 + 美食／小吃","f":"B","core":1},{"n":30,"c":"风味","p":"fēngwèi","t":"fengwei","pos":"名","en":"local flavour","ex":"北京的风味食品很有名。","note":"风味小吃 · 风味美食","f":"B"},{"n":31,"c":"特色","p":"tèsè","t":"tese","pos":"名","en":"distinctive feature","ex":"我买了有中国特色的纪念品。","note":"有…特色的 + 东西（褒义）","f":"B","core":1},{"n":32,"c":"购物","p":"gòuwù","t":"gouwu","pos":"动","en":"to shop; shopping","ex":"你会带他去哪儿购物？","note":"比「买东西」正式","f":"B","core":1},{"n":33,"c":"逛街","p":"guàngjiē","t":"guangjie","pos":"动","en":"to stroll the streets","ex":"下午我们去市区逛街。","note":"逛街不一定买东西；购物一定买东西。","f":"B"},{"n":34,"c":"纪念品","p":"jìniànpǐn","t":"jinianpin","pos":"名","en":"souvenir","ex":"我给朋友买了纪念品。","note":"纪念 jìniàn = commemorate","f":"B","core":1},{"n":35,"c":"当","p":"dāng","t":"dang","pos":"动","en":"to be; to act as; to become","ex":"我一定要再去爬一次长城，当一次好汉。","note":"★ 注意：这个「当」念 dāng（第一声），意思是 to be / to act as，后面接身份。当一次好汉 = be a hero for once｜当老师 = be a teacher｜当医生 = be a doctor。⚠ 不要跟「当地 dāngdì」的当混在一起，也不要跟第四声「当 dàng」（合适）混。","f":"C","core":1},{"n":36,"c":"瀑布","p":"pùbù","t":"pubu","pos":"名","en":"waterfall","ex":"这个瀑布很有名，而且风景非常漂亮。","note":"尼亚加拉大瀑布 = Niagara Falls","f":"C","core":1},{"n":37,"c":"尼亚加拉大瀑布","p":"Ní’yàjiālā dà pùbù","t":"niyajialadapubu","pos":"专名","en":"Niagara Falls","ex":"下午我们去了尼亚加拉大瀑布。","note":"在多伦多附近，开车大约一个半小时","f":"C"},{"n":38,"c":"漂亮","p":"piàoliang","t":"piaoliang","pos":"形","en":"beautiful; pretty","ex":"那里的风景非常漂亮。","note":"漂亮＝美。风景漂亮 · 衣服漂亮","f":"C","core":1},{"n":39,"c":"动物","p":"dòngwù","t":"dongwu","pos":"名","en":"animal","ex":"那里有很多海里的动物。","note":"动物园 dòngwùyuán = zoo","f":"C"},{"n":40,"c":"加拿大","p":"Jiānádà","t":"jianada","pos":"专名","en":"Canada","ex":"我住在加拿大。","note":"老师补充","f":"C"},{"n":41,"c":"多伦多","p":"Duōlúnduō","t":"duolunduo","pos":"专名","en":"Toronto","ex":"多伦多是加拿大最大的城市。","note":"老师补充","f":"C"},{"n":42,"c":"温尼伯","p":"Wēnníbó","t":"wennibo","pos":"专名","en":"Winnipeg","ex":"我参观过温尼伯。","note":"老师补充","f":"C"},{"n":43,"c":"洛杉矶","p":"Luòshānjī","t":"luoshanji","pos":"专名","en":"Los Angeles","ex":"洛杉矶有很多高等院校。","note":"老师补充","f":"C"},{"n":44,"c":"水族馆","p":"shuǐzúguǎn","t":"shuizuguan","pos":"名","en":"aquarium","ex":"多伦多水族馆很有名。","note":"老师补充","f":"C"},{"n":45,"c":"现代","p":"xiàndài","t":"xiandai","pos":"形","en":"modern","ex":"多伦多是现代的大城市。","note":"老师补充","f":"C"},{"n":46,"c":"靠海","p":"kàohǎi","t":"kaohai","pos":"动","en":"to be by the sea","ex":"这个城市靠海。","note":"老师补充","f":"C"},{"n":47,"c":"好玩","p":"hǎowán","t":"haowan","pos":"形","en":"fun; enjoyable","ex":"那个地方很好玩。","note":"老师补充。反义：不好玩","f":"C"},{"n":48,"c":"舒服","p":"shūfu","t":"shufu","pos":"形","en":"comfortable","ex":"今天天气很舒服。","note":"老师补充","f":"C"},{"n":49,"c":"一般般","p":"yìbānbān","t":"yibanban","pos":"形","en":"so-so; just okay","ex":"那儿的菜一般般。","note":"老师补充。口语。＝不讨厌 tǎoyàn，也不特别喜欢","f":"C"},{"n":50,"c":"辣","p":"là","t":"la","pos":"形","en":"spicy","ex":"陕西菜有点儿辣。","note":"老师补充","f":"C"},{"n":51,"c":"心情","p":"xīnqíng","t":"xinqing","pos":"名","en":"mood","ex":"风景很美，我的心情也很好。","note":"老师补充","f":"C"},{"n":52,"c":"像","p":"xiàng","t":"xiang","pos":"动","en":"to look like","ex":"那里的风景美得像画一样。","note":"老师补充","f":"C"},{"n":53,"c":"球星","p":"qiúxīng","t":"qiuxing","pos":"名","en":"football star","ex":"亚马尔是一流的球星。","note":"老师补充","f":"C"},{"n":54,"c":"介绍","p":"jièshào","t":"jieshao","pos":"动","en":"to introduce","ex":"请介绍一下你们学校。","note":"老师补充","f":"C"},{"n":55,"c":"设施","p":"shèshī","t":"sheshi","pos":"名","en":"facilities","ex":"我们学校的设施很好。","note":"老师补充","f":"C"},{"n":56,"c":"发生","p":"fāshēng","t":"fasheng","pos":"动","en":"to happen","ex":"发生了什么？","note":"老师补充","f":"C"},{"n":57,"c":"体验","p":"tǐyàn","t":"tiyan","pos":"动","en":"to experience","ex":"我体验过给水牛洗澡。","note":"老师补充","f":"C"},{"n":58,"c":"深刻","p":"shēnkè","t":"shenke","pos":"形","en":"deep; profound","ex":"给我留下了深刻的印象。","note":"老师补充","f":"C"},{"n":59,"c":"大开眼界","p":"dàkāi yǎnjiè","t":"dakaiyanjie","pos":"成语","en":"to be eye-opening","ex":"这次旅行使我大开眼界。","note":"老师补充","f":"C"},{"n":60,"c":"好汉","p":"hǎohàn","t":"haohan","pos":"名","en":"a true hero; a brave man","ex":"不到长城非好汉。","note":"非 fēi = 不是。整句意思：没爬过长城就不算真正的好汉。","f":"C"}], FIELDS={"A":{"cn":"旅游与景点","py":"Lǚyóu yǔ jǐngdiǎn","en":"Travel & Sights"},"B":{"cn":"体验与交流","py":"Tǐyàn yǔ jiāoliú","en":"Experience & Interaction"},"C":{"cn":"补充词语","py":"Bǔchōng cíyǔ","en":"Extra Words"}}, STORY={"title":"Lachlan 的多伦多","py":"Lachlan de Duōlúnduō","en":"Lachlan's Toronto","paras":[["我叫 Lachlan，现在住在加拿大的多伦多。","你们知道多伦多吗？","多伦多是一个现代的大城市，也是世界著名的旅游城市。","每年夏天，很多人都利用假期来这里旅游、观光。"],["上个星期，我的中国朋友小明第一次来加拿大。","我带他游览了多伦多最有名的几个景点。"],["第一天，我们去了多伦多水族馆。","那里有很多海里的动物，小明说他很喜欢这里的动物。","下午我们参观了一个很大的博物馆，那是加拿大一流的博物馆。"],["第二天，我带他参观了多伦多大学。","多伦多有很多高等院校，多伦多大学是最著名的一所。","这所大学也为学生提供很多学习中文的机会。","下午我们去了尼亚加拉大瀑布，这个瀑布很有名，而且风景非常漂亮。"],["那天晚上，我还带小明到我家里做客。","我妈妈做了有加拿大特色的风味美食。","吃饭的时候，我用汉语跟他沟通。","虽然我的汉语不太好，可是我们聊得很开心。","他也告诉我很多中国的情况和风俗习惯，使我了解了很多以前不知道的事情。"],["第三天下午，我们去市区逛街、购物。","小明给他的家人买了一些有加拿大特色的纪念品。"],["小明说，这次旅行给他留下了难忘的印象。","因为他不但看了风景，而且亲身体验了当地人的生活。"],["明年暑假，我打算再去中国旅游。","我很想游览名胜古迹，也想品尝当地的风味小吃。","我的中文老师说：“不到长城非好汉！”","所以我一定要再去爬一次长城，当一次好汉。"]]},
+      QUESTIONS=[{"q":"Lachlan 现在住在哪儿？","py":"Lachlan xiànzài zhù zài nǎr?","en":"Where does Lachlan live now?","opts":["北京","多伦多","温尼伯","洛杉矶"],"a":1},{"q":"小明第一天去了哪些地方？","py":"Xiǎomíng dì-yī tiān qùle nǎxiē dìfang?","en":"Where did Xiaoming go on day one?","opts":["大学和瀑布","水族馆和博物馆","长城和故宫","市区逛街"],"a":1},{"q":"第二天下午他们去了哪儿？","py":"Dì-èr tiān xiàwǔ tāmen qùle nǎr?","en":"Where did they go on the second afternoon?","opts":["尼亚加拉大瀑布","多伦多水族馆","小明的家","中国"],"a":0},{"q":"Lachlan 用什么语言跟小明沟通？","py":"Lachlan yòng shénme yǔyán gēn Xiǎomíng gōutōng?","en":"Which language does Lachlan use with Xiaoming?","opts":["英语","法语","汉语","泰语"],"a":2},{"q":"小明给家人买了什么？","py":"Xiǎomíng gěi jiārén mǎile shénme?","en":"What did Xiaoming buy for his family?","opts":["有加拿大特色的纪念品","风味小吃","旅游书","球星的衣服"],"a":0},{"q":"为什么这次旅行让小明难忘？","py":"Wèishénme zhè cì lǚxíng ràng Xiǎomíng nánwàng?","en":"Why was the trip unforgettable for Xiaoming?","opts":["因为很便宜","因为他不但看了风景，而且亲身体验了当地人的生活","因为天气很好","因为他去了长城"],"a":1},{"q":"明年暑假 Lachlan 打算做什么？","py":"Míngnián shǔjià Lachlan dǎsuàn zuò shénme?","en":"What does Lachlan plan to do next summer?","opts":["去英国","再去中国旅游，爬长城","在家学习","去水族馆工作"],"a":1},{"q":"“当一次好汉”的「当」是什么意思？","py":"\"Dāng yí cì hǎohàn\" de \"dāng\" shì shénme yìsi?","en":"What does 当 mean in 当一次好汉?","opts":["当地 (local)","to be / to act as","应该 (should)","时候 (when)"],"a":1}], FEEDBACK=[{"id":"f1","type":"scale","py":"Zhè kè nán bu nán?","cn":"这课难不难？","en":"How difficult was this lesson?","opts":["1 很容易 Very easy","2 有点容易 Quite easy","3 刚好 Just right","4 有点难 Quite hard","5 很难 Very hard"]},{"id":"f2","type":"multi","py":"Nǎ yí bùfen zuì nán?","cn":"哪一部分最难？","en":"Which parts were hardest? (choose any)","opts":["词汇 Vocabulary","阅读 Reading","打汉字 Typing characters","打拼音 Typing pinyin","听力 Listening","语法 Grammar"]},{"id":"f3","type":"text","py":"Nǎxiē cíyǔ hái bú huì?","cn":"哪些词语还不会？","en":"Which words are still difficult? Write them here (Chinese, pinyin or English).","ph":"例 e.g. 沟通、亲身体验、当…"},{"id":"f4","type":"text","py":"Xià cì xiǎng duō liàn shénme?","cn":"下次想多练什么？","en":"What would you like more practice with next time?","ph":"例 e.g. more typing practice / more speaking / more grammar…"},{"id":"f5","type":"text","py":"Yǒu shénme wèntí yào wèn lǎoshī?","cn":"有什么问题要问老师？","en":"Any questions for your teacher?","ph":"Write in English or Chinese — whatever is easier."}];
+const SENTS=STORY.paras.flat();
+
+/* ---------- 存储 ---------- */
+const KEY='lachlan_lvyou_v2';
+let S={quiz:{},best:{},done:{},fb:{}};
+try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(S,JSON.parse(r));}catch(e){}
+let tmr;function save(){clearTimeout(tmr);tmr=setTimeout(()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}},250)}
+
+/* ---------- 工具 ---------- */
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function speak(t,rate){
+  if(!window.speechSynthesis)return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t);u.lang='zh-CN';u.rate=rate||0.85;
+  speechSynthesis.speak(u);
+}
+const TONE={'ā':'a','á':'a','ǎ':'a','à':'a','ē':'e','é':'e','ě':'e','è':'e','ī':'i','í':'i','ǐ':'i','ì':'i',
+ 'ō':'o','ó':'o','ǒ':'o','ò':'o','ū':'u','ú':'u','ǔ':'u','ù':'u','ǖ':'v','ǘ':'v','ǚ':'v','ǜ':'v','ü':'v','ń':'n','ň':'n'};
+function flat(s){return String(s).toLowerCase().split('').map(c=>TONE[c]||c).join('').replace(/[^a-z]/g,'');}
+const TONED=/[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜüńň]/;
+// 把注释里的拼音包起来，好让全局拼音开关能一起控制
+function wrapPy(s){
+  return esc(s).replace(/[A-Za-zāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜüńň’']+/g,
+    m => TONED.test(m) ? '<span class="pyx">'+m+'</span>' : m);
+}
+function L(py,cn,en){return '<span class="lb"><span class="py">'+py+'</span><span class="cn">'+cn+'</span><span class="en">'+en+'</span></span>';}
+const pyOn=()=>!document.body.classList.contains('no-py');
+
+/* ---------- 页面 ---------- */
+const PAGES=[
+ {id:'read', py:'Yuèdú',   cn:'阅读故事', en:'Reading'},
+ {id:'vocab',py:'Cíhuì',   cn:'词汇表',   en:'Vocabulary'},
+ {id:'type1',py:'Dǎ cíyǔ', cn:'词语打字', en:'Word Typing'},
+ {id:'type2',py:'Dǎ gùshi',cn:'故事打字', en:'Story Typing'},
+ {id:'fb',   py:'Fǎnkuì',  cn:'反馈',     en:'Feedback'}
+];
+document.getElementById('nav').innerHTML=PAGES.map((p,i)=>
+ '<button data-p="'+p.id+'" class="'+(i===0?'on':'')+'">'+L(p.py,p.cn,p.en)+'</button>').join('');
+
+/* ===== 1. 阅读 ===== */
+const BYWORD={};V.forEach(v=>BYWORD[v.c]=v);
+const KEYS=V.map(v=>v.c).sort((a,b)=>b.length-a.length);
+function markup(text){
+  let out='',i=0;
+  while(i<text.length){
+    let hit=null;
+    for(const k of KEYS){ if(text.startsWith(k,i)){hit=k;break;} }
+    if(hit){
+      const v=BYWORD[hit];
+      out+='<span class="w" tabindex="0" data-w="'+esc(hit)+'"><ruby>'+esc(hit)+'<rt>'+esc(v.p)+'</rt></ruby></span>';
+      i+=hit.length;
+    }else{ out+=esc(text[i]); i++; }
+  }
+  return out;
+}
+function pageRead(){
+  return '<h2 class="sec">'+L('Yuèdú gùshi','阅读故事','Read the story')+'</h2>'+
+  '<p class="lead">Diǎn huángxiàn de cíyǔ → kàn pīnyīn、yìsi hé lǎoshī de zhùshì.<br>点<b>黄线</b>的词语 → 看拼音、意思和老师的注释。<br>Click any <b>underlined</b> word for its pinyin, meaning and the teacher\u2019s note. Use the <b>Pinyin</b> button at the top to show or hide every pinyin on the page.</p>'+
+  '<div class="card tint" style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">'+
+    '<div style="flex:1;min-width:200px"><div style="font-size:1.25rem;font-weight:700;color:var(--ink)">'+STORY.title+'</div>'+
+    '<div class="py" style="color:var(--sun);font-weight:700;font-size:.85rem">'+STORY.py+'</div>'+
+    '<div style="color:var(--grey);font-size:.82rem">'+STORY.en+'</div></div>'+
+    '<button class="btn y" id="rdAll">🔊 '+L('Lǎngdú quánwén','朗读全文','Read all aloud')+'</button></div>'+
+  '<div class="story">'+STORY.paras.map(ps=>'<p>'+markup(ps.join(''))+'</p>').join('')+'</div>'+
+  '<h3>'+L('Lǐjiě liànxí','理解练习','Comprehension')+'</h3>'+
+  '<div id="qbox"></div>';
+}
+function renderQ(){
+  const b=document.getElementById('qbox');if(!b)return;
+  b.innerHTML=QUESTIONS.map((q,i)=>{
+    const p=S.quiz[i];
+    return '<div class="q"><div style="margin-bottom:9px">'+
+      '<div class="py" style="color:var(--sun);font-weight:700;font-size:.8rem">'+esc(q.py)+'</div>'+
+      '<div style="font-weight:700">'+(i+1)+'. '+esc(q.q)+'</div>'+
+      '<div style="color:var(--grey);font-size:.8rem">'+esc(q.en)+'</div></div>'+
+      q.opts.map((o,j)=>{
+        let c='opt';
+        if(p!==undefined){ if(j===q.a)c+=' right'; else if(j===p)c+=' wrong'; }
+        return '<button class="'+c+'" data-q="'+i+'" data-o="'+j+'"'+(p!==undefined?' disabled':'')+'>'+esc(o)+'</button>';
+      }).join('')+
+      '<div class="fb'+(p!==undefined?' show':'')+'">'+(p===q.a?'✅ Duì le! 对了！Correct!':'💡 Zhèngquè dá\u00e0n 正确答案 Answer：'+esc(q.opts[q.a]))+'</div></div>';
+  }).join('');
+}
+function showPop(word,el){
+  const v=BYWORD[word];if(!v)return;
+  const p=document.getElementById('pop');
+  p.innerHTML='<button class="close" data-x="1">×</button>'+
+    '<div class="pp py">'+esc(v.p)+'</div><div class="ph">'+esc(v.c)+'</div>'+
+    '<div class="pe">'+esc(v.pos)+'　'+esc(v.en)+'</div>'+
+    '<div class="px">'+esc(v.ex)+'</div>'+
+    (v.note?'<div class="pn">📌 '+wrapPy(v.note)+'</div>':'')+
+    '<button data-say="'+esc(v.c)+'">🔊 Tīng 听 Listen</button>';
+  p.classList.add('on');
+  const r=el.getBoundingClientRect(),pw=Math.min(340,window.innerWidth-24);
+  let x=r.left+r.width/2-pw/2;
+  x=Math.max(12,Math.min(x,window.innerWidth-pw-12));
+  let y=r.bottom+10;
+  if(y+250>window.innerHeight&&r.top>260)y=Math.max(10,r.top-p.offsetHeight-10);
+  p.style.left=x+'px';p.style.top=y+'px';p.style.width=pw+'px';
+  document.querySelectorAll('.w.act').forEach(w=>w.classList.remove('act'));
+  el.classList.add('act');
+  speak(v.c);
+}
+function hidePop(){
+  const p=document.getElementById('pop');if(p)p.classList.remove('on');
+  document.querySelectorAll('.w.act').forEach(w=>w.classList.remove('act'));
+}
+
+/* ===== 2. 词汇表 ===== */
+function pageVocab(){
+  return '<h2 class="sec">'+L('Cíhuì biǎo','词汇表','Vocabulary list')+'</h2>'+
+  '<p class="lead">Gòng '+V.length+' ge cíyǔ. 共 '+V.length+' 个词语。Click a character to hear it. Pinyin follows the <b>Pinyin</b> button at the top.</p>'+
+  '<input id="vq" placeholder="Sōusuǒ 搜索 Search — 汉字 / pinyin / English">'+
+  '<div class="filters">'+
+    '<button class="chip on" data-f="all">'+L('Quánbù','全部','All')+'</button>'+
+    ['A','B','C'].map(k=>'<button class="chip" data-f="'+k+'">'+L(FIELDS[k].py,FIELDS[k].cn,FIELDS[k].en)+'</button>').join('')+
+    '<button class="chip" data-f="core">'+L('Héxīn cí','★ 核心词','Core words')+'</button>'+
+  '</div><div class="vgrid" id="vg"></div>';
+}
+function renderV(f,q){
+  const g=document.getElementById('vg');if(!g)return;
+  q=(q||'').trim().toLowerCase();
+  const list=V.filter(v=>{
+    const okf=f==='all'||(f==='core'?v.core:v.f===f);
+    const okq=!q||v.c.includes(q)||flat(v.p).includes(flat(q))||v.en.toLowerCase().includes(q);
+    return okf&&okq;
+  });
+  g.innerHTML=list.map(v=>'<div class="vc"><span class="n">'+v.n+'</span>'+
+    '<span class="tg '+(v.core?'c':'e')+'">'+(v.core?'★ 核心词 Core':(v.ext?'⚠ 拓展词 Extra':(v.f==='C'?'📌 补充词 Extra':'一般词 General')))+'</span>'+
+    '<div class="py" style="color:var(--sun);font-weight:700;font-size:.84rem">'+esc(v.p)+'</div>'+
+    '<div class="han" data-say="'+esc(v.c)+'">'+esc(v.c)+'</div>'+
+    '<div class="en2"><span class="pos">'+esc(v.pos)+'</span>　'+esc(v.en)+'</div>'+
+    '<div class="ex2">'+esc(v.ex)+'</div>'+
+    (v.note?'<div class="nt">📌 '+wrapPy(v.note)+'</div>':'')+
+    '<button class="spk" data-say="'+esc(v.ex)+'">🔊 Lì jù 例句 Example</button></div>').join('')||
+    '<p class="lead">Méi zhǎodào. 没找到。No match.</p>';
+}
+
+/* ===== 3. 词语打字 ===== */
+let T1={list:[],i:0,ok:0,tries:0,mode:'hanzi',scope:'core'};
+let t1Timer=null;
+function t1Cancel(){if(t1Timer){clearTimeout(t1Timer);t1Timer=null}}
+function pageType1(){
+  return '<h2 class="sec">'+L('Dǎ cíyǔ liànxí','词语打字练习','Word typing practice')+'</h2>'+
+  '<p class="lead">Kàn tíshì, bǎ cíyǔ dǎ chūlái. 看提示，把这个词打出来。Read the prompt, then type the word.</p>'+
+  '<div class="modes">'+
+    '<button class="chip'+(T1.mode==='hanzi'?' on':'')+'" data-m="hanzi">'+L('Dǎ Hànzì','打汉字','Type characters')+'</button>'+
+    '<button class="chip'+(T1.mode==='pinyin'?' on':'')+'" data-m="pinyin">'+L('Dǎ pīnyīn','打拼音','Type pinyin')+'</button>'+
+    '<button class="chip'+(T1.scope==='core'?' on':'')+'" data-m="core">'+L('Zhǐ liàn héxīn cí','只练核心词','Core only')+'</button>'+
+    '<button class="chip'+(T1.scope==='all'?' on':'')+'" data-m="all">'+L('Liàn quánbù','练全部词','All words')+'</button>'+
+  '</div>'+
+  '<div class="stats">'+
+    '<div class="st"><b id="t1n">1</b><span><i>Dì jǐ gè</i>第几个 / No.</span></div>'+
+    '<div class="st"><b id="t1ok">0</b><span><i>Dá duì</i>答对 / Correct</span></div>'+
+    '<div class="st"><b id="t1ac">—</b><span><i>Zhèngquè lǜ</i>正确率 / Accuracy</span></div>'+
+    '<div class="st"><b id="t1b">—</b><span><i>Zuì hǎo</i>最好纪录 / Best</span></div>'+
+  '</div>'+
+  '<div class="tcard" id="t1card">'+
+    '<div class="prompt-en" id="t1en">—</div>'+
+    '<div class="prompt-py" id="t1py">—</div>'+
+    '<div class="prompt-hint" id="t1pos">—</div>'+
+    '<div class="reveal hide" id="t1rev">—</div>'+
+    '<input class="tin" id="t1in" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="在这里打字 Type here…">'+
+    '<div class="tfb" id="t1fb"></div>'+
+    '<button class="btn ghost" id="t1hint">👁 '+L('Kàn dá\u00e0n','看答案','Show answer')+'</button>'+
+    '<button class="btn" id="t1skip">'+L('Tiàoguò','跳过','Skip')+' →</button>'+
+    '<button class="btn y" id="t1new">'+L('Chóng kāishǐ','重新开始','Restart')+'</button>'+
+  '</div>'+
+  '<div class="note"><b>Tíshì 提示 Tip：</b>「打汉字」要用拼音输入法（Windows：Win + 空格切换；Mac：Ctrl + 空格）。<span class="en">To type characters you need a pinyin IME. No IME? Choose <b>打拼音 Type pinyin</b> — type <b>lvyou</b> for lǚyóu, tones are not needed.</span></div>';
+}
+function t1Load(){
+  t1Cancel();
+  const pool=T1.scope==='core'?V.filter(v=>v.core):V;
+  T1.list=pool.slice().sort(()=>Math.random()-0.5);
+  T1.i=0;T1.ok=0;T1.tries=0;t1Show();
+}
+function t1Show(){
+  const v=T1.list[T1.i];if(!v)return;
+  const en=document.getElementById('t1en');if(!en)return;
+  const hz=T1.mode==='hanzi';
+  en.textContent=v.en;
+  const py=document.getElementById('t1py');
+  if(hz){
+    // 汉字模式：拼音是提示
+    py.className='prompt-py py';py.textContent=v.p;
+    document.getElementById('t1pos').textContent=v.pos+(pyOn()?'':'　（拼音已关闭 Pinyin is off — 打开顶部拼音按钮可看提示）');
+  }else{
+    // 拼音模式：汉字是提示，拼音才是答案，不能显示
+    py.className='prompt-py';py.textContent=v.c;
+    document.getElementById('t1pos').textContent=v.pos+'　打出拼音（不用声调）Type the pinyin, no tone marks';
+  }
+  const rev=document.getElementById('t1rev');
+  rev.textContent=hz?v.c:v.t;rev.classList.add('hide');
+  const inp=document.getElementById('t1in');
+  inp.value='';inp.disabled=false;inp.focus();
+  document.getElementById('t1fb').textContent='';
+  document.getElementById('t1card').className='tcard';
+  document.getElementById('t1n').textContent=(T1.i+1)+'/'+T1.list.length;
+  t1Stats();
+}
+function t1Stats(){
+  if(!document.getElementById('t1ok'))return;
+  document.getElementById('t1ok').textContent=T1.ok;
+  document.getElementById('t1ac').textContent=T1.tries?Math.round(T1.ok/T1.tries*100)+'%':'—';
+  document.getElementById('t1b').textContent=S.best.word?S.best.word+'%':'—';
+}
+function t1Check(){
+  const v=T1.list[T1.i];if(!v)return;
+  const inp=document.getElementById('t1in'),val=inp.value.trim();
+  if(!val)return;
+  const ok = T1.mode==='pinyin'
+    ? (flat(val)===flat(v.p)||flat(val)===v.t)
+    : (val===v.c);
+  T1.tries++;
+  const card=document.getElementById('t1card'),fb=document.getElementById('t1fb');
+  if(ok){
+    T1.ok++;card.className='tcard good';
+    fb.className='tfb ok';fb.textContent='✅ Duì le! 对了！Correct — '+v.c+'  '+v.p;
+    document.getElementById('t1rev').classList.remove('hide');
+    speak(v.c);inp.disabled=true;
+    const acc=Math.round(T1.ok/T1.tries*100);
+    if(!S.best.word||acc>S.best.word){S.best.word=acc;save();}
+    t1Cancel();
+    t1Timer=setTimeout(()=>{t1Timer=null;if(T1.i<T1.list.length-1){T1.i++;t1Show();}else t1Done();},1000);
+  }else{
+    card.className='tcard bad';
+    fb.className='tfb no';
+    fb.textContent=T1.mode==='pinyin'?'❌ Zài shì yí cì. 再试一次。Try again.':'❌ Zài shì yí cì. 再试一次。Try again — 拼音 '+v.p;
+    setTimeout(()=>{const c=document.getElementById('t1card');if(c)c.className='tcard'},700);
+  }
+  t1Stats();
+}
+function t1Done(){
+  const card=document.getElementById('t1card');if(!card)return;
+  const acc=T1.tries?Math.round(T1.ok/T1.tries*100):0;
+  card.innerHTML='<div class="prompt-en">🎉 Wánchéng! 完成！Finished!</div>'+
+    '<div class="reveal">'+acc+'%</div>'+
+    '<div class="prompt-hint">Dá duì 答对 Correct: '+T1.ok+' / '+T1.tries+'</div>'+
+    '<button class="btn y" id="t1new">'+L('Zài liàn yí cì','再练一次','Practise again')+'</button>';
+}
+
+/* ===== 4. 故事打字 ===== */
+let T2={i:0,start:0,typed:'',strict:false};
+const PUNCS=['，','。','、','？','！','：','“','”'];
+// 每个中文标点可以用哪些键代替
+const ALT={'，':[',',' '],'。':['.',' '],'、':[',',' '],'？':['?',' '],'！':['!',' '],
+ '：':[':',' '],'；':[';',' '],'“':['"',' '],'”':['"',' '],'‘':["'",' '],'’':["'",' '],
+ '（':['(',' '],'）':[')',' '],'…':['.',' '],'—':['-',' ']};
+const isPunc=c=>Object.prototype.hasOwnProperty.call(ALT,c)||c===' ';
+function charOk(tgt,typed){
+  if(typed===tgt)return true;
+  if(T2.strict)return false;
+  const a=ALT[tgt];
+  return a?a.indexOf(typed)>=0:false;
+}
+function pageType2(){
+  return '<h2 class="sec">'+L('Dǎ gùshi liànxí','故事打字练习','Story typing practice')+'</h2>'+
+  '<p class="lead">Yí jù yí jù de dǎ. 一句一句地打。打对的字变<b style="color:var(--ok)">绿色</b>，打错的变<b style="color:var(--no)">红色</b>。<br>Type the story sentence by sentence — correct characters turn <b style="color:var(--ok)">green</b>, mistakes turn <b style="color:var(--no)">red</b>.</p>'+
+  '<div class="note"><b>Biāodiǎn 标点 Punctuation：</b>标点符号也要打。如果你的键盘上没有中文标点（，。？！），<b>直接按一下空格键就算对</b>。'+
+  '<span class="en">Punctuation counts too. If your keyboard has no Chinese punctuation marks, just press the <b>space bar</b> instead — it will be marked correct. You can also use English <b>, . ? !</b> or tap the buttons below the box.</span></div>'+
+  '<div class="modes">'+
+    '<button class="chip on" data-sm="0">'+L('Kōnggé yě suàn duì','空格也算对','Space is accepted')+'</button>'+
+    '<button class="chip" data-sm="1">'+L('Yángé móshì','严格模式','Strict — exact punctuation')+'</button>'+
+  '</div>'+
+  '<div class="stats">'+
+    '<div class="st"><b id="t2n">1</b><span><i>Dì jǐ jù</i>第几句 / Sentence</span></div>'+
+    '<div class="st"><b id="t2sp">—</b><span><i>Sùdù</i>速度 / Chars per min</span></div>'+
+    '<div class="st"><b id="t2ac">—</b><span><i>Zhèngquè lǜ</i>正确率 / Accuracy</span></div>'+
+    '<div class="st"><b id="t2b">—</b><span><i>Zuì kuài</i>最快 / Best speed</span></div>'+
+  '</div>'+
+  '<div class="card">'+
+    '<button class="spk" id="t2say" style="float:right;margin:0">🔊 '+L('Tīng zhè jù','听这句','Listen')+'</button>'+
+    '<div style="clear:both"></div>'+
+    '<div class="target" id="t2tar"></div>'+
+    '<textarea class="tarea" id="t2in" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="在这里打字 Type the sentence here…"></textarea>'+
+    '<div class="punc" id="t2punc">'+PUNCS.map(p=>'<button data-pc="'+p+'">'+p+'</button>').join('')+
+      '<button class="sp" data-pc=" ">Kōnggé 空格 Space</button></div>'+
+    '<div class="prog"><i id="t2prog"></i></div>'+
+    '<div class="tfb" id="t2fb"></div>'+
+    '<div style="text-align:center">'+
+      '<button class="btn ghost" id="t2prev">← '+L('Shàng yí jù','上一句','Previous')+'</button>'+
+      '<button class="btn y" id="t2next">'+L('Xià yí jù','下一句','Next')+' →</button>'+
+      '<button class="btn ghost" id="t2clr">'+L('Qīngkōng','清空','Clear')+'</button>'+
+    '</div>'+
+    '<div class="slist" id="t2dots"></div>'+
+  '</div>';
+}
+function t2Show(){
+  document.getElementById('t2n').textContent=(T2.i+1)+'/'+SENTS.length;
+  document.getElementById('t2in').value='';
+  T2.typed='';T2.start=0;
+  document.getElementById('t2fb').textContent='';
+  document.getElementById('t2sp').textContent='—';
+  document.getElementById('t2b').textContent=S.best.cpm||'—';
+  t2Paint();
+  document.getElementById('t2dots').innerHTML=SENTS.map((s,i)=>
+    '<button class="sdot '+(i===T2.i?'on':(S.done[i]?'fin':''))+'" data-d="'+i+'">'+(i+1)+'</button>').join('');
+  document.getElementById('t2in').focus();
+}
+function t2Paint(){
+  const tar=SENTS[T2.i],typed=T2.typed;
+  let good=0;
+  const html=tar.split('').map((c,i)=>{
+    const pc=isPunc(c)?' pc':'';
+    if(i<typed.length){
+      const ok=charOk(c,typed[i]); if(ok)good++;
+      return '<span class="'+(ok?'ok':'no')+pc+'">'+esc(c==' '?'␣':c)+'</span>';
+    }
+    return '<span class="'+(i===typed.length?'cur':'')+pc+'">'+esc(c==' '?'␣':c)+'</span>';
+  }).join('');
+  document.getElementById('t2tar').innerHTML=html;
+  document.getElementById('t2prog').style.width=Math.min(100,Math.round(typed.length/tar.length*100))+'%';
+  document.getElementById('t2ac').textContent=typed.length?Math.round(good/typed.length*100)+'%':'—';
+  if(T2.start&&typed.length){
+    const mins=(Date.now()-T2.start)/60000;
+    document.getElementById('t2sp').textContent=mins>0.02?Math.round(typed.length/mins):'—';
+  }
+  if(typed.length>=tar.length){
+    const fb=document.getElementById('t2fb');
+    if(good===tar.length){
+      fb.className='tfb ok';fb.textContent='✅ Wánquán zhèngquè! 完全正确！Perfect — well done!';
+      S.done[T2.i]=1;save();
+      const mins=(Date.now()-T2.start)/60000,cpm=mins>0.02?Math.round(tar.length/mins):0;
+      if(cpm&&(!S.best.cpm||cpm>S.best.cpm)){S.best.cpm=cpm;save();document.getElementById('t2b').textContent=cpm;}
+      const dot=document.querySelectorAll('.sdot')[T2.i];if(dot)dot.classList.add('fin');
+    }else{
+      fb.className='tfb no';
+      fb.textContent='Zhèngquè lǜ 正确率 '+Math.round(good/tar.length*100)+'% — 红色的字再检查一下。Check the red characters.';
+    }
+  }
+}
+
+/* ===== 5. 反馈 ===== */
+function pageFb(){
+  const qOk=Object.keys(S.quiz).filter(i=>S.quiz[i]===QUESTIONS[i].a).length;
+  const dn=Object.keys(S.done).length;
+  return '<h2 class="sec">'+L('Fǎnkuì','反馈','Feedback')+'</h2>'+
+  '<p class="lead">Gàosu lǎoshī nǐ juéde zěnmeyàng. 告诉老师你觉得这课怎么样。<br>Tell your teacher how this lesson went. Everything is saved on this device — press <b>Copy for teacher</b> at the bottom to send it to her.</p>'+
+  '<h3>'+L('Nǐ de jìlù','你的记录','Your progress')+'</h3>'+
+  '<div class="sum">'+
+   '<div class="sumi"><b>'+qOk+'/'+QUESTIONS.length+'</b><span>阅读题答对<br>Reading correct</span></div>'+
+   '<div class="sumi"><b>'+(S.best.word?S.best.word+'%':'—')+'</b><span>词语打字最好成绩<br>Best word accuracy</span></div>'+
+   '<div class="sumi"><b>'+dn+'/'+SENTS.length+'</b><span>打对的句子<br>Sentences typed</span></div>'+
+   '<div class="sumi"><b>'+(S.best.cpm||'—')+'</b><span>最快速度（字/分）<br>Best speed (chars/min)</span></div>'+
+  '</div>'+
+  FEEDBACK.map(f=>{
+    let body='';
+    if(f.type==='scale'){
+      body='<div class="scale">'+f.opts.map((o,j)=>
+        '<button class="'+(S.fb[f.id]===j?'on':'')+'" data-fs="'+f.id+'" data-v="'+j+'">'+esc(o)+'</button>').join('')+'</div>';
+    }else if(f.type==='multi'){
+      const sel=S.fb[f.id]||[];
+      body='<div class="multi">'+f.opts.map((o,j)=>
+        '<button class="'+(sel.indexOf(j)>=0?'on':'')+'" data-fm="'+f.id+'" data-v="'+j+'">'+esc(o)+'</button>').join('')+'</div>';
+    }else{
+      body='<textarea class="fbox" data-ft="'+f.id+'" placeholder="'+esc(f.ph)+'"></textarea>';
+    }
+    return '<h3>'+L(f.py,f.cn,f.en)+'</h3><div class="card">'+body+
+      '<div class="saved" id="sv_'+f.id+'"></div></div>';
+  }).join('')+
+  '<div style="text-align:center;margin-top:20px">'+
+    '<button class="btn y" id="fbCopy">📋 '+L('Fùzhì gěi lǎoshī','复制给老师','Copy for teacher')+'</button>'+
+    '<button class="btn ghost" id="fbShow">'+L('Kànkan wénzì','看看文字','Preview text')+'</button></div>'+
+  '<textarea id="copyout" readonly></textarea>';
+}
+function fbText(){
+  const qOk=Object.keys(S.quiz).filter(i=>S.quiz[i]===QUESTIONS[i].a).length;
+  let t='Lachlan — 旅游单元反馈 Travel Unit Feedback\n';
+  t+='日期 Date: '+new Date().toLocaleDateString()+'\n\n';
+  t+='【记录 Progress】\n';
+  t+='阅读题 Reading: '+qOk+'/'+QUESTIONS.length+'\n';
+  t+='词语打字最好成绩 Best word accuracy: '+(S.best.word?S.best.word+'%':'—')+'\n';
+  t+='打对的句子 Sentences typed correctly: '+Object.keys(S.done).length+'/'+SENTS.length+'\n';
+  t+='最快速度 Best speed: '+(S.best.cpm||'—')+' 字/分 chars per min\n\n';
+  t+='【反馈 Feedback】\n';
+  FEEDBACK.forEach(f=>{
+    const v=S.fb[f.id];let a='—';
+    if(f.type==='scale')a=(v!==undefined)?f.opts[v]:'—';
+    else if(f.type==='multi')a=(v&&v.length)?v.map(j=>f.opts[j]).join('、'):'—';
+    else a=v||'—';
+    t+=f.cn+' / '+f.en+'\n→ '+a+'\n\n';
+  });
+  return t;
+}
+
+/* ===== 路由 ===== */
+const BUILD={read:pageRead,vocab:pageVocab,type1:pageType1,type2:pageType2,fb:pageFb};
+let cur='read',vf='all';
+function show(id){
+  cur=id;hidePop();t1Cancel();
+  document.getElementById('main').innerHTML='<section class="on">'+BUILD[id]()+'</section>';
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.p===id));
+  window.scrollTo({top:0,behavior:'instant'});
+  if(id==='read')renderQ();
+  if(id==='vocab')renderV(vf,'');
+  if(id==='type1')t1Load();
+  if(id==='type2')t2Show();
+  if(id==='fb')FEEDBACK.filter(f=>f.type==='text').forEach(f=>{
+    const el=document.querySelector('[data-ft="'+f.id+'"]');if(el)el.value=S.fb[f.id]||'';
+  });
+}
+
+/* ===== 事件 ===== */
+document.addEventListener('click',e=>{
+  const w=e.target.closest('.w');
+  if(w){showPop(w.dataset.w,w);return;}
+  const t=e.target.closest('button');
+  if(!t){if(!e.target.closest('.pop'))hidePop();return;}
+  if(t.dataset.x){hidePop();return;}
+  if(t.dataset.p){show(t.dataset.p);return;}
+  if(t.dataset.say!==undefined){speak(t.dataset.say,0.85);return;}
+  if(t.id==='rdAll'){speak(SENTS.join(''),0.85);return;}
+  if(t.dataset.q!==undefined){
+    const i=+t.dataset.q;if(S.quiz[i]!==undefined)return;
+    S.quiz[i]=+t.dataset.o;save();renderQ();return;
+  }
+  if(t.dataset.f){vf=t.dataset.f;
+    document.querySelectorAll('.chip[data-f]').forEach(c=>c.classList.toggle('on',c===t));
+    renderV(vf,document.getElementById('vq').value);return;}
+  if(t.dataset.m){
+    const m=t.dataset.m;
+    if(m==='hanzi'||m==='pinyin'){T1.mode=m;
+      document.querySelectorAll('[data-m="hanzi"],[data-m="pinyin"]').forEach(c=>c.classList.toggle('on',c===t));}
+    else{T1.scope=m;
+      document.querySelectorAll('[data-m="core"],[data-m="all"]').forEach(c=>c.classList.toggle('on',c===t));}
+    t1Load();return;
+  }
+  if(t.id==='t1hint'){document.getElementById('t1rev').classList.remove('hide');document.getElementById('t1in').focus();return;}
+  if(t.id==='t1skip'){if(T1.i<T1.list.length-1){T1.i++;t1Show();}else t1Done();return;}
+  if(t.id==='t1new'){t1Load();return;}
+  if(t.dataset.sm!==undefined){T2.strict=t.dataset.sm==='1';
+    document.querySelectorAll('[data-sm]').forEach(c=>c.classList.toggle('on',c===t));t2Paint();return;}
+  if(t.dataset.pc!==undefined){const i=document.getElementById('t2in');
+    if(!T2.start)T2.start=Date.now();
+    i.value+=t.dataset.pc;T2.typed=i.value;t2Paint();i.focus();return;}
+  if(t.id==='t2say'){speak(SENTS[T2.i],0.8);return;}
+  if(t.id==='t2next'){if(T2.i<SENTS.length-1){T2.i++;t2Show();}return;}
+  if(t.id==='t2prev'){if(T2.i>0){T2.i--;t2Show();}return;}
+  if(t.id==='t2clr'){document.getElementById('t2in').value='';T2.typed='';T2.start=0;t2Paint();
+    document.getElementById('t2in').focus();return;}
+  if(t.dataset.d!==undefined){T2.i=+t.dataset.d;t2Show();return;}
+  // 反馈
+  if(t.dataset.fs){S.fb[t.dataset.fs]=+t.dataset.v;save();
+    t.parentElement.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===t));
+    flash('sv_'+t.dataset.fs);return;}
+  if(t.dataset.fm){const id=t.dataset.fm,j=+t.dataset.v;
+    S.fb[id]=S.fb[id]||[];
+    const k=S.fb[id].indexOf(j);
+    if(k>=0)S.fb[id].splice(k,1);else S.fb[id].push(j);
+    save();t.classList.toggle('on');flash('sv_'+id);return;}
+  if(t.id==='fbShow'){const o=document.getElementById('copyout');
+    o.value=fbText();o.classList.add('on');return;}
+  if(t.id==='fbCopy'){
+    const txt=fbText(),o=document.getElementById('copyout');
+    o.value=txt;o.classList.add('on');
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(()=>{t.textContent='✅ 已复制 Copied!';
+        setTimeout(()=>{t.innerHTML='📋 '+L('Fùzhì gěi lǎoshī','复制给老师','Copy for teacher')},1800);});
+    }else{o.select();document.execCommand&&document.execCommand('copy');}
+    return;}
+});
+function flash(id){const e=document.getElementById(id);if(!e)return;
+  e.textContent='✓ 已保存 Saved';setTimeout(()=>{if(e)e.textContent=''},1300);}
+
+let composing=false;
+document.addEventListener('compositionstart',()=>{composing=true});
+document.addEventListener('compositionend',e=>{composing=false;handleInput(e)});
+document.addEventListener('input',e=>{if(!composing)handleInput(e)});
+function handleInput(e){
+  const t=e.target;
+  if(t.id==='vq'){renderV(vf,t.value);return;}
+  if(t.id==='t2in'){if(!T2.start&&t.value.length)T2.start=Date.now();
+    T2.typed=t.value;t2Paint();return;}
+  if(t.dataset&&t.dataset.ft){S.fb[t.dataset.ft]=t.value;save();flash('sv_'+t.dataset.ft);return;}
+}
+document.addEventListener('keydown',e=>{
+  if(e.target.id==='t1in'&&e.key==='Enter'){e.preventDefault();if(!composing)t1Check();}
+  if(e.key==='Escape')hidePop();
+});
+document.addEventListener('scroll',hidePop,{passive:true});
+
+/* 工具栏 */
+document.getElementById('bPy').onclick=function(){
+  document.body.classList.toggle('no-py');
+  const on=pyOn();
+  this.textContent='Pīnyīn 拼音 Pinyin：'+(on?'开 ON':'关 OFF');
+  this.classList.toggle('on',on);
+  if(cur==='type1')t1Show();
+};
+document.getElementById('bFs').onclick=function(){
+  const b=document.body;
+  if(b.classList.contains('fs-xl'))b.classList.remove('fs-xl');
+  else if(b.classList.contains('fs-l')){b.classList.remove('fs-l');b.classList.add('fs-xl');}
+  else b.classList.add('fs-l');
+};
+document.getElementById('bSpeak').onclick=()=>{
+  if(cur==='read')speak(SENTS.join(''),0.85);
+  else if(cur==='type2')speak(SENTS[T2.i],0.8);
+  else speak('请先打开阅读故事那一页。',0.9);
+};
+document.getElementById('bReset').onclick=()=>{
+  if(confirm('Qīngkōng suǒyǒu jìlù ma? 清空所有记录吗？Clear all progress and feedback? This cannot be undone.')){
+    S={quiz:{},best:{},done:{},fb:{}};
+    try{localStorage.removeItem(KEY)}catch(e){}
+    show(cur);
+  }
+};
+
+show('read');
+</script>
+</body>
+</html>
